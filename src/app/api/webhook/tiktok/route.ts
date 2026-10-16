@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { store } from '@/lib/store';
 import { resolveYouTubeVideo } from '@/lib/youtube';
 import { RequestType, CosplaySubType } from '@/types';
+import { insertD1Request, upsertD1Viewer } from '@/db/d1-service';
 
 export async function POST(req: NextRequest) {
   try {
@@ -58,6 +59,14 @@ export async function POST(req: NextRequest) {
         addedBy: `TikTok Gift: ${giftName || 'Gift'} (${giftCoins || 0} koin)`,
       });
 
+      try {
+        await insertD1Request(item);
+        const v = store.findViewerByName(item.viewerName);
+        if (v) await upsertD1Viewer(v);
+      } catch (d1Err) {
+        console.error('Failed to sync tiktok gift request to D1:', d1Err);
+      }
+
       return NextResponse.json({ success: true, processed: 'GIFT', item });
     }
 
@@ -113,6 +122,14 @@ export async function POST(req: NextRequest) {
         source: 'TIKTOK_CHAT',
         addedBy: 'TikTok Live Chat (!req)',
       });
+
+      try {
+        await insertD1Request(item);
+        const v = store.findViewerByName(item.viewerName);
+        if (v) await upsertD1Viewer(v);
+      } catch (d1Err) {
+        console.error('Failed to sync tiktok chat request to D1:', d1Err);
+      }
 
       return NextResponse.json({ success: true, processed: 'CHAT', item });
     }

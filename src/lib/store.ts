@@ -139,6 +139,18 @@ class MemoryStore {
     });
   }
 
+  public syncRequestsFromD1(items: RequestItem[]) {
+    this.data.requests = [...items];
+  }
+
+  public syncSettingsFromD1(settings: SessionSettings) {
+    this.data.settings = { ...this.data.settings, ...settings };
+  }
+
+  public syncViewersFromD1(viewers: Viewer[]) {
+    this.data.viewers = [...viewers];
+  }
+
   // Requests API
   public getRequests(): RequestItem[] {
     return [...this.data.requests];

@@ -9,11 +9,13 @@ export const requests = sqliteTable('requests', {
   youtubeVideoId: text('youtube_video_id'),
   youtubeTitle: text('youtube_title'),
   isFastTrack: integer('is_fast_track', { mode: 'boolean' }).default(false).notNull(),
+  fastTrackedAt: text('fast_tracked_at'),
   status: text('status').default('PENDING').notNull(), // 'PENDING' | 'PLAYING' | 'COMPLETED' | 'DELETED'
   source: text('source').default('MANUAL').notNull(), // 'MANUAL' | 'TIKTOK_GIFT' | 'TIKTOK_CHAT'
   addedBy: text('added_by'),
   createdAt: text('created_at').notNull(),
   completedAt: text('completed_at'),
+  order: integer('order'),
 });
 
 export const settings = sqliteTable('settings', {

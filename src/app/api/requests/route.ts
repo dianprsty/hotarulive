@@ -2,8 +2,29 @@ import { NextRequest, NextResponse } from 'next/server';
 import { store } from '@/lib/store';
 import { resolveYouTubeVideo, extractYouTubeVideoId } from '@/lib/youtube';
 import { RequestType, CosplaySubType } from '@/types';
+import { getD1Requests, getD1Settings, insertD1Request, upsertD1Viewer } from '@/db/d1-service';
+
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With',
+    },
+  });
+}
 
 export async function GET() {
+  const d1Requests = await getD1Requests();
+  if (d1Requests !== null) {
+    store.syncRequestsFromD1(d1Requests);
+  }
+  const d1Settings = await getD1Settings();
+  if (d1Settings !== null) {
+    store.syncSettingsFromD1(d1Settings);
+  }
+
   const requests = store.getSortedRequests();
   const settings = store.getSettings();
   return NextResponse.json({ requests, settings });
@@ -66,6 +87,14 @@ export async function POST(req: NextRequest) {
       source: source || 'MANUAL',
       addedBy: addedBy || 'HOST',
     });
+
+    try {
+      await insertD1Request(newRequest);
+      const v = store.findViewerByName(newRequest.viewerName);
+      if (v) await upsertD1Viewer(v);
+    } catch (d1Err) {
+      console.error('Failed to sync new request to D1:', d1Err);
+    }
 
     return NextResponse.json({ success: true, request: newRequest }, { status: 201 });
   } catch (err: any) {
