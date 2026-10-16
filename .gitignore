@@ -43,3 +43,6 @@ next-env.d.ts
 
 # local persistent store (dev only)
 /.data/
+
+# cloudflare wrangler
+/.wrangler/

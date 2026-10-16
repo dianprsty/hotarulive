@@ -22,77 +22,9 @@ const defaultSettings: SessionSettings = {
   updatedAt: new Date().toISOString(),
 };
 
-const initialSampleRequests: RequestItem[] = [
-  {
-    id: 'req_init_1',
-    viewerName: 'Budi_Sultan99',
-    requestType: 'LAGU',
-    details: 'YOASOBI - Idol (Oshi no Ko OP)',
-    youtubeVideoId: 'ZRtdQ81jPUQ',
-    youtubeTitle: 'YOASOBI「アイドル」 Official Music Video',
-    isFastTrack: true,
-    status: 'PENDING',
-    source: 'TIKTOK_GIFT',
-    addedBy: 'SYSTEM (Gift: Paus)',
-    createdAt: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
-  },
-  {
-    id: 'req_init_2',
-    viewerName: 'RianWibu21',
-    requestType: 'LAGU',
-    details: 'Kenshi Yonezu - Kick Back',
-    youtubeVideoId: 'M2cckDmNLMI',
-    youtubeTitle: 'Kenshi Yonezu - KICK BACK',
-    isFastTrack: true,
-    status: 'PENDING',
-    source: 'TIKTOK_GIFT',
-    addedBy: 'MODERATOR',
-    createdAt: new Date(Date.now() - 1000 * 60 * 10).toISOString(),
-  },
-  {
-    id: 'req_init_3',
-    viewerName: 'Siti_Neko',
-    requestType: 'FANSIGN',
-    details: 'Fansign: "Semangat skripsinya Siti CatLover 🐾"',
-    isFastTrack: false,
-    status: 'PENDING',
-    source: 'MANUAL',
-    addedBy: 'MODERATOR',
-    createdAt: new Date(Date.now() - 1000 * 60 * 8).toISOString(),
-  },
-  {
-    id: 'req_init_4',
-    viewerName: 'AldoGaming',
-    requestType: 'COSPLAY',
-    cosplaySubType: 'GAME',
-    details: 'Pose Raiden Shogun (Genshin Impact) pegang katana!',
-    isFastTrack: false,
-    status: 'PENDING',
-    source: 'TIKTOK_CHAT',
-    addedBy: 'HOST',
-    createdAt: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
-  },
-  {
-    id: 'req_init_5',
-    viewerName: 'MegaChan',
-    requestType: 'PAP',
-    details: 'PAP Duck face pose lucu ✌️',
-    isFastTrack: false,
-    status: 'COMPLETED',
-    source: 'MANUAL',
-    addedBy: 'HOST',
-    createdAt: new Date(Date.now() - 1000 * 60 * 20).toISOString(),
-    completedAt: new Date(Date.now() - 1000 * 60 * 12).toISOString(),
-  },
-];
+const initialSampleRequests: RequestItem[] = [];
 
-const initialSampleViewers: Viewer[] = [
-  { id: 'v_1', name: 'Budi_Sultan99', totalRequests: 5, createdAt: new Date(Date.now() - 86400000 * 5).toISOString(), lastSeenAt: new Date().toISOString() },
-  { id: 'v_2', name: 'RianWibu21', totalRequests: 3, createdAt: new Date(Date.now() - 86400000 * 3).toISOString(), lastSeenAt: new Date().toISOString() },
-  { id: 'v_3', name: 'Siti_Neko', totalRequests: 2, createdAt: new Date(Date.now() - 86400000 * 2).toISOString(), lastSeenAt: new Date().toISOString() },
-  { id: 'v_4', name: 'AldoGaming', totalRequests: 4, createdAt: new Date(Date.now() - 86400000 * 4).toISOString(), lastSeenAt: new Date().toISOString() },
-  { id: 'v_5', name: 'MegaChan', totalRequests: 1, createdAt: new Date(Date.now() - 86400000 * 1).toISOString(), lastSeenAt: new Date().toISOString() },
-];
+const initialSampleViewers: Viewer[] = [];
 
 // In-Memory Singleton Store
 class MemoryStore {
@@ -148,7 +80,7 @@ class MemoryStore {
         return {
           requests: parsed.requests || [],
           settings: { ...defaultSettings, ...(parsed.settings || {}) },
-          viewers: parsed.viewers && parsed.viewers.length > 0 ? parsed.viewers : initialSampleViewers,
+          viewers: Array.isArray(parsed.viewers) ? parsed.viewers : initialSampleViewers,
         };
       }
     } catch (err) {
