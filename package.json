@@ -12,6 +12,8 @@
     "db:migrate:remote": "wrangler d1 execute weblive-db --remote --file=./drizzle/0000_little_beast.sql"
   },
   "dependencies": {
+    "@emnapi/core": "^1.11.3",
+    "@emnapi/runtime": "^1.11.3",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.45.4",
     "lucide-react": "^1.57.0",
