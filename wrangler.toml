@@ -1,0 +1,9 @@
+name = "hotarulive"
+compatibility_date = "2026-10-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Cloudflare D1 Database Binding
+[[d1_databases]]
+binding = "DB"
+database_name = "weblive-db"
+database_id = "YOUR_CLOUDFLARE_D1_DATABASE_ID_HERE" # Ganti dengan database_id dari dashboard Cloudflare atau 'npx wrangler d1 create weblive-db'
