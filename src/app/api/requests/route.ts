@@ -9,6 +9,11 @@ export async function GET() {
   return NextResponse.json({ requests, settings });
 }
 
+export async function DELETE() {
+  store.clearAll();
+  return NextResponse.json({ success: true, message: 'Semua antrean request dan penonton berhasil dibersihkan' });
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();

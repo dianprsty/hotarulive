@@ -94,6 +94,18 @@ class MemoryStore {
     };
   }
 
+  public reloadFromDisk(): StoreData {
+    this.data = this.loadFromDisk();
+    return this.data;
+  }
+
+  public clearAll() {
+    this.data.requests = [];
+    this.data.viewers = [];
+    this.saveToDisk();
+    this.broadcast('CONNECTED', { requests: [], settings: this.data.settings });
+  }
+
   private saveToDisk() {
     try {
       if (!fs.existsSync(DATA_DIR)) {
