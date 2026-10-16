@@ -44,8 +44,12 @@ export function useRealtimeQueue() {
           const event: RealtimeEvent = JSON.parse(e.data);
 
           if (event.type === 'CONNECTED' && event.payload) {
-            setRequests(event.payload.requests || []);
-            setSettings(event.payload.settings || null);
+            if (Array.isArray(event.payload.requests) && event.payload.requests.length > 0) {
+              setRequests(event.payload.requests);
+            }
+            if (event.payload.settings) {
+              setSettings(event.payload.settings);
+            }
             setIsLoading(false);
           } else if (event.type === 'REQUEST_CREATED') {
             fetchData();
@@ -76,13 +80,24 @@ export function useRealtimeQueue() {
 
     connectSSE();
 
-    // Fallback sync polling every 10 seconds
-    const interval = setInterval(fetchData, 10000);
+    // Fast polling every 2 seconds for cross-device synchronization
+    const interval = setInterval(fetchData, 2000);
+
+    // Sync immediately on focus or when smartphone screen turns on
+    const handleVisibility = () => {
+      if (!document.hidden) {
+        fetchData();
+      }
+    };
+    window.addEventListener('visibilitychange', handleVisibility);
+    window.addEventListener('focus', handleVisibility);
 
     return () => {
       if (eventSource) eventSource.close();
       clearTimeout(retryTimeout);
       clearInterval(interval);
+      window.removeEventListener('visibilitychange', handleVisibility);
+      window.removeEventListener('focus', handleVisibility);
     };
   }, [fetchData]);
 
