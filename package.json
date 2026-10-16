@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev --port=3030",
     "build": "next build",
+    "build:worker": "opennextjs-cloudflare build",
     "start": "next start",
     "lint": "eslint",
     "db:generate": "drizzle-kit generate",
@@ -14,6 +15,7 @@
   "dependencies": {
     "@emnapi/core": "^1.11.3",
     "@emnapi/runtime": "^1.11.3",
+    "@opennextjs/cloudflare": "^1.20.12",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.45.4",
     "lucide-react": "^1.57.0",
