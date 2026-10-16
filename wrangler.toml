@@ -6,4 +6,4 @@ compatibility_flags = ["nodejs_compat"]
 [[d1_databases]]
 binding = "DB"
 database_name = "weblive-db"
-database_id = "YOUR_CLOUDFLARE_D1_DATABASE_ID_HERE" # Ganti dengan database_id dari dashboard Cloudflare atau 'npx wrangler d1 create weblive-db'
+database_id = "4832d9e5-f4d2-4661-ba21-5a1bc1ea5777"
